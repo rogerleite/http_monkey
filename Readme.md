@@ -1,6 +1,7 @@
 # HTTP Monkey
 
 A fluent interface to do HTTP calls, free of fat dependencies and at same time, powered by middlewares rack.
+
 It's an awesome client with an awful name.
 
 ## Light and powerful
@@ -9,6 +10,7 @@ It's an awesome client with an awful name.
     # Works with Entry Point concept
     response = HttpMonkey.at("http://google.com").get
     response = HttpMonkey.at("http://google.com").post(:q => "Http Monkey!")
+    puts response.body  # More info about response at http://httpirb.com/#responses
 
     ## Headers
     HttpMonket.at("http://google.com")
@@ -30,7 +32,7 @@ It's an awesome client with an awful name.
 
 ## Flexibility
 
-You can build your own client and define how it should behave (or by request).
+You can build your own client and define how it should behave. You can also define behaviour by request.
 
 ``` ruby
     # Works with status code callbacks (here known as behaviours)
@@ -54,7 +56,6 @@ You can build your own client and define how it should behave (or by request).
 
     # by request
     chimp.at("http://google.com").get do
-
       on(200) do |client, response|
         raise "ok" # only for this request
       end
@@ -63,7 +64,7 @@ You can build your own client and define how it should behave (or by request).
 
 ## Choose your HTTP client
 
-Thanks to [HTTPI](http://httpirb.com/), you can choose diffent HTTP clients:
+Thanks to [HTTPI](http://httpirb.com/), you can choose different HTTP clients:
 
 * [HTTPClient](http://rubygems.org/gems/httpclient)
 * [Curb](http://rubygems.org/gems/curb)
@@ -126,7 +127,6 @@ Easy to extend, using the power of Rack middleware interface.
       use Logger
       # [...]
     end
-
 ```
 
 Some ideas:
