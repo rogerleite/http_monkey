@@ -10,8 +10,6 @@ It's an awesome client with an awful name.
     response = HttpMonkey.at("http://google.com").get
     response = HttpMonkey.at("http://google.com").post(:q => "Http Monkey!")
 
-    # All HTTP functionality included
-
     ## Headers
     HttpMonket.at("http://google.com")
       .with_header("Content-Type" => "text/html")
@@ -115,6 +113,8 @@ Easy to extend, using the power of Rack middleware interface.
     HttpMonkey.configure do
       use Logger
     end
+    # Now all requests uses Logger
+    response = HttpMonkey.at("http://google.com").get
 
     # or when you build your own client
     chimp = HttpMonkey.build do
@@ -143,4 +143,4 @@ Suggestions, bugs and pull requests, here at [github.com/rogerleite/http_monkey]
 
 ## License
 
-Restfolia is copyright 2012 Roger Leite and contributors. It is licensed under the MIT license. See the include MIT-LICENSE file for details.
+HTTP Monkey is copyright 2012 Roger Leite and contributors. It is licensed under the MIT license. See the include LICENSE file for details.
