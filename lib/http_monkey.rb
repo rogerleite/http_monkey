@@ -12,14 +12,18 @@ module HttpMonkey
     HttpMonkey::EntryPoint.new(default_client, url)
   end
 
+  def self.configure(&block)
+    default_client.configure(&block)
+  end
+
+  def self.build(&block)
+    HttpMonkey::Client.new.configure(&block)
+  end
+
   protected
 
   def self.default_client
-    @@default_client ||= build_default_client
-  end
-
-  def self.build_default_client
-    HttpMonkey::Client.new.configure do
+    @@default_client ||= build do
       net_adapter :net_http
       behaviours do
         # Follow redirects
