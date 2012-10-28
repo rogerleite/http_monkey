@@ -53,6 +53,15 @@ describe HttpMonkey::EntryPoint do
     subject.delete
   end
 
+  it "HTTP requests should accept configuration block" do
+    block = lambda { raise "Not to be raised" }
+    @mock_client.expects(:clone).returns(@mock_client)
+    @mock_client.expects(:configure).returns(@mock_client)
+    expects_request_on(@mock_client, :get, nil)
+
+    subject.get(&block)
+  end
+
   describe "FluentInterface -_-" do
 
     it "#with_header" do

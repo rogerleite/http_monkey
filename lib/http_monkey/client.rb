@@ -6,6 +6,11 @@ module HttpMonkey
       @conf = Configuration.new
     end
 
+    def initialize_copy(source)
+      super
+      @conf = @conf.clone
+    end
+
     def net_adapter
       @conf.net_adapter
     end

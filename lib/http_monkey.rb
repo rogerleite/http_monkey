@@ -20,9 +20,7 @@ module HttpMonkey
 
   def self.build_default_client
     HttpMonkey::Client.new.configure do
-
       net_adapter :net_http
-
       behaviours do
         # Follow redirects
         on([301, 302, 303, 307]) do |client, request, response|
@@ -42,3 +40,5 @@ module HttpMonkey
   end
 
 end
+
+HTTPI.log = false

@@ -40,25 +40,36 @@ module HttpMonkey
 
     include EntryPointFluentInterface
 
-    def get(query_param = nil)
+    def get(query_param = nil, &block)
       @request.body = query_param
-      @client.http_request(:get, @request)
+      capture_client(&block).http_request(:get, @request)
     end
 
-    def post(body_param)
+    def post(body_param, &block)
       @request.body = body_param
-      @client.http_request(:post, @request)
+      capture_client(&block).http_request(:post, @request)
     end
 
-    def put(body_param)
+    def put(body_param, &block)
       @request.body = body_param
-      @client.http_request(:put, @request)
+      capture_client(&block).http_request(:put, @request)
     end
 
-    def delete
-      @client.http_request(:delete, @request)
+    def delete(&block)
+      capture_client(&block).http_request(:delete, @request)
     end
 
+    protected
+
+    # If block given, clones actual client and uses
+    # the block as configuration
+    def capture_client(&block)
+      if block_given?
+        @client.clone.configure(&block)
+      else
+        @client
+      end
+    end
   end
 
 end

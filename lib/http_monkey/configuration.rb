@@ -8,6 +8,12 @@ module HttpMonkey
       self.clear!
     end
 
+    def initialize_copy(source)
+      super
+      @behaviours = @behaviours.clone
+      @behaviours_range = @behaviours_range.clone
+    end
+
     def clear!
       @behaviours = {}
       @behaviours_range = {}
@@ -45,6 +51,11 @@ module HttpMonkey
     def initialize
       net_adapter(:net_http)  #default adapter
       @behaviours = Behaviours.new
+    end
+
+    def initialize_copy(source)
+      super
+      @behaviours = @behaviours.clone
     end
 
     def net_adapter(adapter = nil)

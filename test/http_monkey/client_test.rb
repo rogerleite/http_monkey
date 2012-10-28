@@ -33,4 +33,22 @@ describe HttpMonkey::Client do
 
   end
 
+  it "#clone" do
+    subject.configure do
+      behaviours.on(200) { "ok" }
+    end
+
+    url = "http://www.google.com.br"
+    request = HTTPI::Request.new(url)
+    stub_request(:get, url)
+
+    response = subject.http_request(:get, request)
+    response.must_equal("ok")
+
+    subject_clone = subject.clone.configure do
+      behaviours.on(200) { raise "Clone Wars! (this exception cannot be raised)" }
+    end
+    subject.http_request(:get, request)
+  end
+
 end
