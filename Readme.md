@@ -13,21 +13,20 @@ It's an awesome client with an awful name.
     puts response.body  # More info about response at http://httpirb.com/#responses
 
     ## Headers
-    HttpMonket.at("http://google.com")
-      .with_header("Content-Type" => "text/html")
-      .with_header("X-Custom" => "sample")
-      .get
+    HttpMonket.at("http://google.com").
+      with_header("Content-Type" => "text/html").
+      with_header("X-Custom" => "sample").
+      get
 
     ## Cookies
     HttpMonkey.at("http://google.com").set_cookie("blah").get
 
     ## Basic Authentication
     HttpMonkey.at("http://user:pass@google.com").get
-    HttpMonkey.at("http://google.com")
-      .basic_auth(:user => "user", :password => "pass")
-      .get
+    HttpMonkey.at("http://google.com").
+      basic_auth("user", "pass").
+      get
 
-    ## Proxy, Zip ... etc.
 ```
 
 ## Flexibility
