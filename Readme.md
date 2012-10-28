@@ -26,27 +26,33 @@ It's an awesome client with an awful name.
     HttpMonkey.at("http://google.com").
       basic_auth("user", "pass").
       get
-
 ```
 
 ## Flexibility
 
-You can build your own client and define how it should behave. You can also define behaviour by request.
+You can configure the default or build your own client and define how it should behave.
+
+You can also define net adapter, behaviours and middlewares by request.
 
 ``` ruby
+    # Changing default client
+    HttpMonkey.configure do
+      net_adapter :curb
+      behaviours.on(500) do |client, request, response|
+        raise "Server side error :X"
+      end
+    end
+
     # Works with status code callbacks (here known as behaviours)
     chimp = HttpMonkey.build do
       behaviours do
         # 2xx range
-        on(200..299) do |client, response|
+        on(200..299) do |client, request, response|
           response
         end
         # Redirects
-        on([301, 302]) do |client, response|
+        on([301, 302]) do |client, request, response|
           raise "Redirect error"
-        end
-        on(500) do |client, response|
-          raise "Server side error :X"
         end
       end
     end
@@ -55,7 +61,7 @@ You can build your own client and define how it should behave. You can also defi
 
     # by request
     chimp.at("http://google.com").get do
-      on(200) do |client, response|
+      behaviours.on(200) do |client, request, response|
         raise "ok" # only for this request
       end
     end
@@ -74,19 +80,15 @@ Thanks to [HTTPI](http://httpirb.com/), you can choose different HTTP clients:
 ``` ruby
     # When you build your own client, you can define which Http client to use.
     chimp = HttpMonkey.build do
-
       # HTTP clients available [:httpclient, :curb, :net_http]
       net_adapter :curb  # default :net_http
-
       # [...]
     end
 
     # You can also change you net_adapter by request
     chimp.at("http://google.com").get do
-
       # only on this request, use :httpclient
       net_adapter :httpclient
-
       # [...]
     end
 ```
@@ -111,19 +113,23 @@ Easy to extend, using the power of Rack middleware interface.
 
     # Add custom middlewares to default stack
     HttpMonkey.configure do
-      use Logger
+      middlewares do
+        use Logger
+      end
     end
     # Now all requests uses Logger
     response = HttpMonkey.at("http://google.com").get
 
     # or when you build your own client
     chimp = HttpMonkey.build do
-      use Logger
+      middlewares do
+        use Logger
+      end
     end
 
     # or by request
     chimp.at("http://google.com").get do
-      use Logger
+      middlewares.use Logger
       # [...]
     end
 ```
