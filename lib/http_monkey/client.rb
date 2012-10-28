@@ -1,35 +1,29 @@
 module HttpMonkey
 
-  class ClientAttributes
-
-    def initialize
-      net_adapter(:net_http)  #default adapter
-    end
-
-    def net_adapter(adapter = nil)
-      @net_adapter = adapter unless adapter.nil?
-      @net_adapter
-    end
-
-  end
-
   class Client
 
     def initialize
-      @attrs = ClientAttributes.new
+      @conf = Configuration.new
     end
 
     def net_adapter
-      @attrs.net_adapter
+      @conf.net_adapter
     end
 
     def configure(&block)
-      @attrs.instance_eval(&block) if block_given?
+      @conf.instance_eval(&block) if block_given?
       self
     end
 
     def http_request(method, request)
-      HTTPI.request(method, request, net_adapter)
+      response = HTTPI.request(method, request, net_adapter)
+
+      if (behaviour = @conf.behaviours.find(response.code))
+        behaviour.call(self, request, response)
+      else
+        unknown_behaviour = @conf.behaviours.unknown_behaviour
+        unknown_behaviour.call(self, request, response) if unknown_behaviour.respond_to?(:call)
+      end
     end
 
   end
