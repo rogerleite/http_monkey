@@ -13,8 +13,19 @@ describe HttpMonkey do
     HttpMonkey.default_client.net_adapter.must_equal(:curb)
   end
 
-  it "#build" do
-    HttpMonkey.build.wont_be_same_as(HttpMonkey.default_client)
+  describe "#build" do
+    it "wont be same client" do
+      HttpMonkey.build.wont_be_same_as(HttpMonkey.default_client)
+    end
+    it "always return response by default" do
+      url = "http://fakeserver.com"
+      stub_request(:get, url).to_return(:body => "abc")
+
+      http_client = HttpMonkey.build
+      response = http_client.at(url).get
+      response.wont_be_nil
+      response.body.must_equal("abc")
+    end
   end
 
 end
