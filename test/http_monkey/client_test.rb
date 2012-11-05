@@ -6,6 +6,10 @@ describe HttpMonkey::Client do
     HttpMonkey::Client.new
   end
 
+  it "#at" do
+    subject.at("http://server.com").must_be_instance_of(HttpMonkey::EntryPoint)
+  end
+
   describe "default values" do
     it "#net_adapter" do
       subject.net_adapter.must_equal(:net_http)

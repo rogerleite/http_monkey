@@ -9,7 +9,7 @@ require "http_monkey/client"
 module HttpMonkey
 
   def self.at(url)
-    HttpMonkey::EntryPoint.new(default_client, url)
+    default_client.at(url)
   end
 
   def self.configure(&block)

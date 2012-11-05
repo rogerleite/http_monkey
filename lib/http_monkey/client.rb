@@ -11,6 +11,10 @@ module HttpMonkey
       @conf = @conf.clone
     end
 
+    def at(url)
+      HttpMonkey::EntryPoint.new(self, url)
+    end
+
     def net_adapter
       @conf.net_adapter
     end
