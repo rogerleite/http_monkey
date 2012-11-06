@@ -14,6 +14,7 @@ module HttpMonkey
       @request.headers["Cookie"] = cookie if cookie
       self
     end
+    alias :set_cookies :set_cookie
 
     def basic_auth(user, pass)
       @request.auth.basic(user, pass)

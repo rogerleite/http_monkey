@@ -5,6 +5,7 @@ require "http_monkey/version"
 require "http_monkey/entry_point"
 require "http_monkey/configuration"
 require "http_monkey/configuration/behaviours"
+require "http_monkey/configuration/middlewares"
 require "http_monkey/client"
 
 module HttpMonkey
