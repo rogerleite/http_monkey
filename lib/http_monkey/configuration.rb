@@ -13,6 +13,7 @@ module HttpMonkey
     def initialize_copy(source)
       super
       @behaviours = @behaviours.clone
+      @middlewares = @middlewares.clone
     end
 
     def net_adapter(adapter = nil)

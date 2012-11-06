@@ -6,6 +6,17 @@ describe HttpMonkey::Configuration do
     HttpMonkey::Configuration.new
   end
 
+  describe "#clone" do
+    it "#behaviours" do
+      clone = subject.clone
+      subject.behaviours.wont_be_same_as(clone.behaviours)
+    end
+    it "#middlewares" do
+      clone = subject.clone
+      subject.middlewares.wont_be_same_as(clone.middlewares)
+    end
+  end
+
   describe "#net_adapter" do
     it "returns value" do
       subject.net_adapter.must_equal(:net_http)
