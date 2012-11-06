@@ -7,6 +7,11 @@ module HttpMonkey
       @chain = []
     end
 
+    def initialize_copy(source)
+      super
+      @chain = @chain.clone
+    end
+
     def use(middleware, *args, &block)
       @chain << lambda { |app| middleware.new(app, *args, &block) }
       self
