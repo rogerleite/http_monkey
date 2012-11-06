@@ -1,8 +1,8 @@
 require "test_helper"
 
-describe HttpMonkey::Behaviours do
+describe HttpMonkey::Configuration::Behaviours do
 
-  subject { HttpMonkey::Behaviours.new }
+  subject { HttpMonkey::Configuration::Behaviours.new }
 
   describe "#on" do
     it "support Integer code" do
