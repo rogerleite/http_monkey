@@ -7,6 +7,7 @@ module HttpMonkey
       @behaviours = HttpMonkey::Configuration::Behaviours.new
       # behaviour default always return response
       @behaviours.on_unknown { |client, req, response| response }
+      @middlewares = HttpMonkey::Configuration::Middlewares.new
     end
 
     def initialize_copy(source)
@@ -22,6 +23,11 @@ module HttpMonkey
     def behaviours(&block)
       @behaviours.instance_eval(&block) if block_given?
       @behaviours
+    end
+
+    def middlewares(&block)
+      @middlewares.instance_eval(&block) if block_given?
+      @middlewares
     end
 
   end
