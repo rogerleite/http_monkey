@@ -1,4 +1,5 @@
 require "net/http"
+require "rack"
 require "httpi"
 
 require "http_monkey/version"
@@ -7,6 +8,7 @@ require "http_monkey/configuration"
 require "http_monkey/configuration/behaviours"
 require "http_monkey/configuration/middlewares"
 require "http_monkey/client"
+require "http_monkey/client/environment"
 
 module HttpMonkey
 
