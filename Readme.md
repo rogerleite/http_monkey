@@ -26,6 +26,13 @@ It's an awesome client with an awful name.
     HttpMonkey.at("http://google.com").
       basic_auth("user", "pass").
       get
+
+    ## Request Internals (yields HTTPI::Request, to set your obscure desires)
+    HttpMonkey.at("http://google.com").yield_request do |req|
+      req.proxy = "http://proxy.com"
+      req.open_timeout = 30
+      req.read_timeout = 15
+    end.get
 ```
 
 ## Flexibility

@@ -26,6 +26,12 @@ module HttpMonkey
       self
     end
 
+    # Yields internal HTTPI::Request
+    def yield_request
+      yield(@request) if block_given?
+      self
+    end
+
   end
 
   class EntryPoint

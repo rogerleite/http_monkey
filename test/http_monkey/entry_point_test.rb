@@ -108,6 +108,19 @@ describe HttpMonkey::EntryPoint do
       end
       subject.digest_auth("mad", "max").get
     end
+
+    it "#yield_request" do
+      expects_request_on(@mock_client, :get, nil) do |method, request|
+        request.proxy.to_s.must_equal("http://proxy.com") && \
+          request.open_timeout.must_equal(30) && \
+          request.read_timeout.must_equal(15)
+      end
+      subject.yield_request do |req|
+        req.proxy = "http://proxy.com"
+        req.open_timeout = 30
+        req.read_timeout = 15
+      end.get
+    end
   end
 
 end
