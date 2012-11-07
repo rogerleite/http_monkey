@@ -26,8 +26,9 @@ module HttpMonkey
 
     def http_request(method, request)
       env = Client::EnvironmentBuilder.new(self, method, request).to_env
-      rack_response = @conf.middlewares.execute(Client::HttpRequest, env) # rack response [code, headers, body]
-      response = HTTPI::Response.new(rack_response[0], rack_response[1], rack_response[2])
+      code, headers, body = @conf.middlewares.execute(Client::HttpRequest, env)
+      body.close if body.respond_to?(:close)  # close when is a Rack::BodyProxy
+      response = HTTPI::Response.new(code, headers, body)
 
       if (behaviour = @conf.behaviours.find(response.code))
         behaviour.call(self, request, response)
@@ -35,20 +36,6 @@ module HttpMonkey
         unknown_behaviour = @conf.behaviours.unknown_behaviour
         unknown_behaviour.call(self, request, response) if unknown_behaviour.respond_to?(:call)
       end
-    end
-
-  end
-
-  # Main App middleware
-  # Responsible to make HTTP request
-  class Client::HttpRequest
-
-    def self.call(env)
-      method, request, net_adapter = env['http_monkey.request']
-      request.headers = Client::Environment.new(env).http_headers
-
-      response = HTTPI.request(method, request, net_adapter)
-      [response.code, response.headers, response.body]
     end
 
   end

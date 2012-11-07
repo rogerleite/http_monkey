@@ -8,7 +8,9 @@ require "http_monkey/configuration"
 require "http_monkey/configuration/behaviours"
 require "http_monkey/configuration/middlewares"
 require "http_monkey/client"
+require "http_monkey/client/http_request"
 require "http_monkey/client/environment"
+require "http_monkey/client/environment_builder"
 
 module HttpMonkey
 
