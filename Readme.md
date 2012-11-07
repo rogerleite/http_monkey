@@ -33,6 +33,16 @@ It's an awesome client with an awful name.
       req.open_timeout = 30
       req.read_timeout = 15
     end.get
+
+    # SSL
+    HttpMonkey.at("http://google.com").yield_request do |req|
+      req.auth.ssl.cert_key_file     = "client_key.pem"   # the private key file to use
+      req.auth.ssl.cert_key_password = "C3rtP@ssw0rd"     # the key file's password
+      req.auth.ssl.cert_file         = "client_cert.pem"  # the certificate file to use
+      req.auth.ssl.ca_cert_file      = "ca_cert.pem"      # the ca certificate file to use
+      req.auth.ssl.verify_mode       = :none              # or one of [:peer, :fail_if_no_peer_cert, :client_once]
+      req.auth.ssl.ssl_version       = :TLSv1             # or one of [:SSLv2, :SSLv3]
+    end.get
 ```
 
 ## Flexibility
