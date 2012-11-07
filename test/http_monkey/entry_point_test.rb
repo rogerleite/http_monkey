@@ -20,9 +20,11 @@ describe HttpMonkey::EntryPoint do
         block_assertion = true
       end
 
+      request_url = request.url.select(:scheme, :host).join("://")
+
       block_assertion && \
         method.must_equal(method) && \
-        request.url.to_s.must_equal(TEST_URL) && \
+        request_url.must_equal(TEST_URL) && \
         request.must_be_instance_of(HTTPI::Request) && \
         request.body.must_equal(body)
     end
@@ -34,7 +36,10 @@ describe HttpMonkey::EntryPoint do
   end
 
   it "#get with parameters" do
-    expects_request_on(@mock_client, :get, "p1=param1&p2=param2")
+    expects_request_on(@mock_client, :get, nil) do |method, request|
+      request.url.query.must_equal("p1=param1&p2=param2")
+    end
+
     subject.get(:p1 => "param1", :p2 => "param2")
   end
 
