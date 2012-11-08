@@ -55,10 +55,13 @@ module HttpMonkey
     end
 
     def normalize_body(body)
-      input = (body.nil? ? "" : body.dup)
+      return "" if body.nil?
+      input = body.dup
       input.force_encoding("ASCII-8BIT") if input.respond_to?(:force_encoding)
-      input = StringIO.new(input) if input.is_a?(String)
-      input.set_encoding(Encoding::BINARY) if input.respond_to?(:set_encoding)
+      # TODO: search about setting encoding binary
+      #input = StringIO.new(input) if input.is_a?(String)
+      #input.set_encoding(Encoding::BINARY) if input.respond_to?(:set_encoding)
+      #input = input.string if input.respond_to?(:string)
       input
     end
 
