@@ -37,7 +37,7 @@ describe HttpMonkey::Configuration do
     it "sets value using block" do
       flag = "out block"
       subject.behaviours do
-        self.must_respond_to(:on)
+        self.must_be_instance_of(HttpMonkey::Configuration::Behaviours)
         flag = "inside block"
       end
       flag.must_equal("inside block")
@@ -54,7 +54,7 @@ describe HttpMonkey::Configuration do
     it "sets value using block" do
       flag = "out block"
       subject.middlewares do
-        self.must_respond_to(:use)
+        self.must_be_instance_of(HttpMonkey::Configuration::Middlewares)
         flag = "inside block"
       end
       flag.must_equal("inside block")
