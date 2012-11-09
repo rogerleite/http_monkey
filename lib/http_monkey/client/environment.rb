@@ -1,6 +1,6 @@
 module HttpMonkey
 
-  # A read-only Rack environment with helpers.
+  # Rack environment with helpers.
   class Client::Environment
 
     def initialize(env)
@@ -9,6 +9,10 @@ module HttpMonkey
 
     def [](key)
       @env[key]
+    end
+
+    def []=(key, value)
+      @env[key] = value
     end
 
     # From {"HTTP_CONTENT_TYPE" => "text/html"} to {"Content-Type" => "text/html"}
