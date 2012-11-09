@@ -22,11 +22,20 @@ describe HttpMonkey::EntryPoint do
 
       request_url = request.url.select(:scheme, :host).join("://")
 
+      body_assertion = false
+      if body.nil?
+        body_assertion = request.body.must_be_nil
+      elsif body.is_a?(String)
+        body_assertion = request.body.must_equal(body)
+      elsif body.is_a?(Regexp)
+        body_assertion = request.body.must_match(body)
+      end
+
       block_assertion && \
         method.must_equal(method) && \
         request_url.must_equal(TEST_URL) && \
         request.must_be_instance_of(HTTPI::Request) && \
-        request.body.must_equal(body)
+        body_assertion
     end
   end
 
@@ -37,19 +46,19 @@ describe HttpMonkey::EntryPoint do
 
   it "#get with parameters" do
     expects_request_on(@mock_client, :get, nil) do |method, request|
-      request.url.query.must_equal("p1=param1&p2=param2")
+      request.url.query.must_match(/(p1=param1&p2=param2)|(p2=param2&p1=param1)/)
     end
 
     subject.get(:p1 => "param1", :p2 => "param2")
   end
 
   it "#post with parameters" do
-    expects_request_on(@mock_client, :post, "b1=param1&b2=param2")
+    expects_request_on(@mock_client, :post, /(b1=param1&b2=param2)|(b2=param2&b1=param1)/)
     subject.post(:b1 => "param1", :b2 => "param2")
   end
 
   it "#put with parameters" do
-    expects_request_on(@mock_client, :put, "p1=param1&p2=param2")
+    expects_request_on(@mock_client, :put, /(p1=param1&p2=param2)|(p2=param2&p1=param1)/)
     subject.put(:p1 => "param1", :p2 => "param2")
   end
 
