@@ -1,4 +1,4 @@
-# HTTP Monkey
+# HTTP Monkey [![Build Status](https://secure.travis-ci.org/rogerleite/http_monkey.png?branch=master)](https://travis-ci.org/rogerleite/http_monkey)
 
 A fluent interface to do HTTP calls, free of fat dependencies and at same time, powered by middlewares rack.
 
