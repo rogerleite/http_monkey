@@ -43,6 +43,11 @@ It's an awesome client with an awful name.
       req.auth.ssl.verify_mode       = :none              # or one of [:peer, :fail_if_no_peer_cert, :client_once]
       req.auth.ssl.ssl_version       = :TLSv1             # or one of [:SSLv2, :SSLv3]
     end.get
+
+    # Default HTTP Headers (to all requests)
+    HttpMonkey.configure do
+      middlewares.use HttpMonkey::Middlewares::DefaultHeaders, {"Content-Type" => "application/json"}
+    end
 ```
 
 ## Flexibility
