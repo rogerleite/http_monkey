@@ -11,7 +11,7 @@ class IntegrationServer
 
   def start(host = "localhost", port = 4000)
     Thread.new do
-      silence_output do
+      silence_output do  # comment this if you want information
         Rack::Server.start(
           :app => @app,
           :server => 'webrick',

@@ -13,4 +13,7 @@ Rake::TestTask.new("test:integration") do |t|
   t.pattern = "test/integration/*_test.rb"
 end
 
-task :default => [:test, :"test:integration"]
+desc "For Travis CI with love"
+task :ci => [:test, :"test:integration"]
+
+task :default => :ci
