@@ -53,3 +53,12 @@ module HttpMonkey
 end
 
 HTTPI.log = false
+
+# This monkey patch is to avoid a bug from httpi (1.1.1) on ruby 1.8.7
+# that raises "undefined method `use_ssl=' for Net::HTTP"
+if RUBY_VERSION =~ /1\.8/
+  class Net::HTTPSession
+    def use_ssl=(flag)
+    end
+  end
+end

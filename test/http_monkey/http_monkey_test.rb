@@ -21,15 +21,6 @@ describe HttpMonkey do
     it "wont be same client" do
       subject.build.wont_be_same_as(HttpMonkey.default_client)
     end
-    it "always return response by default" do
-      url = "http://fakeserver.com"
-      stub_request(:get, url).to_return(:body => "abc")
-
-      http_client = subject.build
-      response = http_client.at(url).get
-      response.wont_be_nil
-      response.body.must_equal("abc")
-    end
   end
 
 end

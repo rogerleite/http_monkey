@@ -1,7 +1,5 @@
 require "test_helper"
 
-::WebMock.allow_net_connect! if defined?(::WebMock)
-
 # Inspiration from https://github.com/djanowski/mock-server
 class IntegrationServer
 
