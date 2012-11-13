@@ -19,12 +19,14 @@ module HttpMonkey
       @request = request
     end
 
+    # Returns a instance of HttpMonkey::Client::Environment with
+    # rack like headers.
     def to_env
       uri = @request.url
       rack_input = normalize_body(@request.body)
 
-      env = DEFAULT_ENV.dup
-      env = env.merge({
+      env = HttpMonkey::Client::Environment.new(DEFAULT_ENV)
+      env.update({
         # request info
         'REQUEST_METHOD'  => @method.to_s.upcase,
         'SERVER_NAME'     => uri.host,
@@ -42,16 +44,9 @@ module HttpMonkey
 
         # custom info
         'http_monkey.request' => [@method, @request, @client.net_adapter]
-      }).update(http_headers)
+      })
+      env.add_http_header(@request.headers)
       env
-    end
-
-    # From {"Content-Type" => "text/html"} to {"HTTP_CONTENT_TYPE" => "text/html"}
-    def http_headers
-      env_headers = @request.headers.map do |key, value|
-        ["HTTP_#{key.to_s.upcase.gsub("-", "_")}", value]
-      end
-      Hash[env_headers]
     end
 
     def normalize_body(body)
