@@ -5,7 +5,7 @@ module HttpMonkey
   class Client::HttpRequest
 
     def self.call(env)
-      env = Client::Environment.new(env)
+      env = Client::Environment.new(env) unless env.is_a?(Client::Environment)
       method, request, net_adapter = env['http_monkey.request']
 
       request.headers = env.http_headers
