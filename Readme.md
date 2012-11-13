@@ -48,6 +48,20 @@ It's an awesome client with an awful name.
     HttpMonkey.configure do
       middlewares.use HttpMonkey::Middlewares::DefaultHeaders, {"Content-Type" => "application/json"}
     end
+
+    # Filter all requests (access to env and request objects)
+    HttpMonkey.configure do
+      middlewares.use HttpMonkey::Middlewares::RequestFilter do |env, request|
+        # HttpMonkey::Client::Environment, hash rack on steroids
+        # You can use "snaky" methods like:
+        # env.http_headers  # => {"Content-Type" => "text/html"}
+        # env.add_http_header("X-Custom" => "custom")
+
+        # HTTPI::Request, you can set proxy, timeouts, authentication etc.
+        # req.proxy = "http://example.com"
+      end
+    end
+
 ```
 
 ## Flexibility
