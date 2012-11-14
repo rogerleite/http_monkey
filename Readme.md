@@ -46,12 +46,12 @@ It's an awesome client with an awful name.
 
     # Default HTTP Headers (to all requests)
     HttpMonkey.configure do
-      middlewares.use HttpMonkey::Middlewares::DefaultHeaders, {"Content-Type" => "application/json"}
+      middlewares.use HttpMonkey::M::DefaultHeaders, {"Content-Type" => "application/json"}
     end
 
     # Filter all requests (access to env and request objects)
     HttpMonkey.configure do
-      middlewares.use HttpMonkey::Middlewares::RequestFilter do |env, request|
+      middlewares.use HttpMonkey::M::RequestFilter do |env, request|
         # HttpMonkey::Client::Environment, hash rack on steroids
         # You can use "snaky" methods like:
         # env.http_headers  # => {"Content-Type" => "text/html"}

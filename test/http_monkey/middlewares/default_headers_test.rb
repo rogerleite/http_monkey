@@ -7,7 +7,7 @@ describe HttpMonkey::Middlewares::DefaultHeaders do
   end
 
   let(:fake_env) { Hash.new }
-  subject { HttpMonkey::Middlewares::DefaultHeaders }
+  subject { HttpMonkey::M::DefaultHeaders }
 
   it "always call app" do
     @mock_app.expects(:call).with(fake_env)

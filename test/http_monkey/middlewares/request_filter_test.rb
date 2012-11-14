@@ -7,7 +7,7 @@ describe HttpMonkey::Middlewares::RequestFilter do
   end
 
   let(:env) { HttpMonkey::Client::Environment.new }
-  subject { HttpMonkey::Middlewares::RequestFilter }
+  subject { HttpMonkey::M::RequestFilter }
 
   it "always call app" do
     @mock_app.expects(:call).with(env)
