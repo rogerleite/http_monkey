@@ -2,29 +2,28 @@ require "test_helper"
 
 describe HttpMonkey::Middlewares::RequestFilter do
 
+  include HttpMonkey::Support::FakeEnvironment
+
   before do
     @mock_app = stub("app", :call => "stubbed")
   end
 
-  let(:env) { HttpMonkey::Client::Environment.new }
   subject { HttpMonkey::M::RequestFilter }
 
   it "always call app" do
-    @mock_app.expects(:call).with(env)
-    subject.new(@mock_app).call(env)
+    @mock_app.expects(:call).with(fake_env)
+    subject.new(@mock_app).call(fake_env)
   end
 
   it "executes block" do
-    stub_req = stub("req")
-    env["http_monkey.request"] = [nil, stub_req, nil]
     flag = "out block"
 
     middle = subject.new(@mock_app) do |env, req|
-      env.must_respond_to(:monkey_request)
-      req.must_be_same_as(stub_req)
+      env.must_be_same_as(fake_env)
+      req.must_be_same_as(fake_request)
       flag = "inside block"
     end
-    middle.call(env)
+    middle.call(fake_env)
 
     flag.must_equal("inside block")
   end
