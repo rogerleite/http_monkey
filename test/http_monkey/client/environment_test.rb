@@ -44,4 +44,16 @@ describe HttpMonkey::Client::Environment do
     end
   end
 
+  describe "#monkey_client" do
+    it "with object" do
+      stub_client = stub("request")
+      env = subject.new("http_monkey.request" => [nil, nil, stub_client])
+      env.monkey_client.must_be_same_as(stub_client)
+    end
+    it "without object" do
+      env = subject.new
+      env.monkey_client.must_be_nil
+    end
+  end
+
 end

@@ -50,6 +50,13 @@ module HttpMonkey
       end
     end
 
+    # Returns HttpMonkey::Client instance or nil.
+    def monkey_client
+      if (data = self['http_monkey.request'])
+        data[2]
+      end
+    end
+
   end
 
 end

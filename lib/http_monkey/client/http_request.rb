@@ -6,12 +6,12 @@ module HttpMonkey
 
     def self.call(env)
       env = Client::Environment.new(env) unless env.is_a?(Client::Environment)
-      method, request, net_adapter = env['http_monkey.request']
+      method, request, client = env['http_monkey.request']
 
       request.headers = env.http_headers
       request.body = env['rack.input']
 
-      response = HTTPI.request(method, request, net_adapter)
+      response = HTTPI.request(method, request, client.net_adapter)
       [response.code, response.headers, response.body]
     end
 
