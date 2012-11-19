@@ -57,6 +57,29 @@ module HttpMonkey
       end
     end
 
+    # Sets uri as Rack wants
+    def uri=(uri)
+      self['SERVER_NAME'] = uri.host
+      self['SERVER_PORT'] = uri.port.to_s
+      self['QUERY_STRING'] = (uri.query || "")
+      self['PATH_INFO'] = (!uri.path || uri.path.empty?) ? "/" : uri.path
+      self['rack.url_scheme'] = uri.scheme
+      self['HTTPS'] = (uri.scheme == "https" ? "on" : "off")
+      self['REQUEST_URI'] = uri.request_uri
+      self['HTTP_HOST'] = uri.host
+    end
+
+    # Gets uri from Rack environment.
+    # Throws ArgumentError for invalid uri.
+    def uri
+      uri = %Q{#{self['rack.url_scheme']}://#{self['SERVER_NAME']}:#{self['SERVER_PORT']}#{self['REQUEST_URI']}}
+      begin
+        URI.parse(uri)
+      rescue StandardError => e
+        raise ArgumentError, "Invalid #{uri}", e.backtrace
+      end
+    end
+
   end
 
 end
