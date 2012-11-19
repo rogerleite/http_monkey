@@ -8,7 +8,8 @@ class IntegrationServer
   end
 
   def start(host = "localhost", port = 4000)
-    Thread.new do
+    puts "== Starting #{@app.inspect}"
+    @pid_server = fork do
       silence_output do  # comment this if you want information
         Rack::Server.start(
           :app => @app,
@@ -21,7 +22,13 @@ class IntegrationServer
       end
     end
     wait_for_service(host, port)
-    true
+    self
+  end
+
+  def shutdown
+    puts "== Stopping #{@app.inspect}\n\n"
+    Process.kill(:INT, @pid_server) # send ctrl+c to webrick
+    Process.waitpid(@pid_server) # waiting his life go to void ...
   end
 
   protected
