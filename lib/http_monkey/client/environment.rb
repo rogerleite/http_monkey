@@ -57,7 +57,7 @@ module HttpMonkey
       end
     end
 
-    # Sets uri as Rack wants
+    # Sets uri as Rack wants.
     def uri=(uri)
       self['SERVER_NAME'] = uri.host
       self['SERVER_PORT'] = uri.port.to_s
@@ -69,7 +69,7 @@ module HttpMonkey
       self['HTTP_HOST'] = uri.host
     end
 
-    # Gets uri from Rack environment.
+    # Returns uri from Rack environment.
     # Throws ArgumentError for invalid uri.
     def uri
       uri = %Q{#{self['rack.url_scheme']}://#{self['SERVER_NAME']}:#{self['SERVER_PORT']}#{self['REQUEST_URI']}}
@@ -78,6 +78,18 @@ module HttpMonkey
       rescue StandardError => e
         raise ArgumentError, "Invalid #{uri}", e.backtrace
       end
+    end
+
+    # Returns normalized request method.
+    #
+    # Example
+    #
+    #   env = Client::Environment.new('REQUEST_METHOD' => 'GET')
+    #   env.request_method  # => :get
+    #
+    def request_method
+      method = self['REQUEST_METHOD'].to_s
+      (method.empty? ? nil : method.downcase.to_sym)
     end
 
   end

@@ -105,4 +105,15 @@ describe HttpMonkey::Client::Environment do
     end
   end
 
+  describe "#request_method" do
+    it "with value" do
+      env = subject.new('REQUEST_METHOD' => "GET")
+      env.request_method.must_equal(:get)
+    end
+    it "empty" do
+      env = subject.new
+      env.request_method.must_be_nil
+    end
+  end
+
 end
