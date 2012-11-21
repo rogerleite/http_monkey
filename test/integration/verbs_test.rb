@@ -1,7 +1,6 @@
-require "integration/server"
+require "test_helper"
 
 VerbsApp = Rack::Builder.new do
-  #use IntegrationServer::InspectEnv # i can see clear now the rain is gone ...
   map "/" do
     run lambda { |env|
       env['rack.input'] = env['rack.input'].read if env['rack.input'].respond_to?(:read)
@@ -11,25 +10,29 @@ VerbsApp = Rack::Builder.new do
   end
 end
 
-IntegrationServer.new(VerbsApp).start
-
 describe "Integration Specs - Verbs" do
 
-  describe "#get" do
-    it "no parameter" do
-      response = HttpMonkey.at("http://localhost:4000").get
-      server_env = YAML.load(response.body)
+  def self.before_suite
+    @@server = MinionServer.new(VerbsApp).start
+  end
 
-      server_env["REQUEST_METHOD"].must_equal("GET")
-      server_env["QUERY_STRING"].must_be_empty
-    end
-    it "with parameters" do
-      response = HttpMonkey.at("http://localhost:4000").get(:q => "query")
-      server_env = YAML.load(response.body)
+  def self.after_suite
+    @@server.shutdown
+  end
 
-      server_env["REQUEST_METHOD"].must_equal("GET")
-      server_env["QUERY_STRING"].must_equal("q=query")
-    end
+  it "#get - no parameter" do
+    response = HttpMonkey.at("http://localhost:4000").get
+    server_env = YAML.load(response.body)
+
+    server_env["REQUEST_METHOD"].must_equal("GET")
+    server_env["QUERY_STRING"].must_be_empty
+  end
+  it "#get - with parameters" do
+    response = HttpMonkey.at("http://localhost:4000").get(:q => "query")
+    server_env = YAML.load(response.body)
+
+    server_env["REQUEST_METHOD"].must_equal("GET")
+    server_env["QUERY_STRING"].must_equal("q=query")
   end
 
   it "#post" do

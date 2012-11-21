@@ -11,6 +11,7 @@ module HttpMonkey
       "rack.multithread" => true,
       "rack.multiprocess" => false,
       "rack.run_once" => false,
+      'SCRIPT_NAME'     => "" # call me Suzy
     }
 
     def initialize(client, method, request)
@@ -26,19 +27,12 @@ module HttpMonkey
       rack_input = normalize_body(@request.body)
 
       env = HttpMonkey::Client::Environment.new(DEFAULT_ENV)
+      env.uri = @request.url
+
       env.update({
         # request info
         'REQUEST_METHOD'  => @method.to_s.upcase,
-        'SERVER_NAME'     => uri.host,
-        'SERVER_PORT'     => (uri.port || uri.inferred_port).to_s,
-        'QUERY_STRING'    => uri.query || "",
-        'PATH_INFO'       => (!uri.path || uri.path.empty?) ? "/" : uri.path,
-        'rack.url_scheme' => uri.scheme,
-        'HTTPS'           => (uri.scheme == "https" ? "on" : "off"),
-        'SCRIPT_NAME'     => "", # call me Suzy
 
-        'REQUEST_URI'     => uri.request_uri,
-        'HTTP_HOST'       => uri.host,
         'rack.input'      => rack_input,
         'CONTENT_LENGTH'  => rack_input.length.to_s,
 

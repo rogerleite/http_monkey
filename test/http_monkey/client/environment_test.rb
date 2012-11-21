@@ -56,4 +56,64 @@ describe HttpMonkey::Client::Environment do
     end
   end
 
+  describe "#uri=" do
+    it "complete url" do
+      env = subject.new
+      env.uri = URI.parse("http://localhost:3000/path?q=query")
+
+      env['SERVER_NAME'].must_equal("localhost")
+      env['SERVER_PORT'].must_equal("3000")
+      env['QUERY_STRING'].must_equal("q=query")
+      env['PATH_INFO'].must_equal("/path")
+      env['rack.url_scheme'].must_equal("http")
+      env['HTTPS'].must_equal("off")
+      env['REQUEST_URI'].must_equal("/path?q=query")
+      env['HTTP_HOST'].must_equal("localhost")
+    end
+    it "simple url" do
+      env = subject.new
+      env.uri = URI.parse("http://localhost")
+
+      env['SERVER_PORT'].must_equal("80")
+      env['QUERY_STRING'].must_equal("")
+      env['PATH_INFO'].must_equal("/")
+    end
+    it "https url" do
+      env = subject.new
+      env.uri = URI.parse("https://localhost:3000")
+
+      env['HTTPS'].must_equal("on")
+    end
+  end
+
+  describe "#uri" do
+    it "valid url" do
+      env = subject.new
+      env['SERVER_NAME'] = "localhost"
+      env['SERVER_PORT'] = "3000"
+      env['rack.url_scheme'] = "http"
+      env['REQUEST_URI'] = "/path?q=query"
+
+      uri = env.uri
+      uri.to_s.must_equal("http://localhost:3000/path?q=query")
+    end
+    it "invalid url" do
+      env = subject.new
+      lambda do
+        env.uri
+      end.must_raise(ArgumentError)
+    end
+  end
+
+  describe "#request_method" do
+    it "with value" do
+      env = subject.new('REQUEST_METHOD' => "GET")
+      env.request_method.must_equal(:get)
+    end
+    it "empty" do
+      env = subject.new
+      env.request_method.must_be_nil
+    end
+  end
+
 end
