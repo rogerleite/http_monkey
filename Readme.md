@@ -62,6 +62,10 @@ It's an awesome client with an awful name.
       end
     end
 
+    # Enable automatic follow redirect
+    HttpMonkey.configure do
+      middlewares.use HttpMonkey::M::FollowRedirect, :max_tries => 3
+    end
 ```
 
 ## Flexibility
