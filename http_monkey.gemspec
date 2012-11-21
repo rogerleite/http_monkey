@@ -24,4 +24,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "minitest", "~> 3"
   gem.add_development_dependency "minitest-reporters", "~> 0.7.0"
   gem.add_development_dependency "mocha"
+  gem.add_development_dependency "minion_server"
 end

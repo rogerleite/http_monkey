@@ -11,3 +11,5 @@ require "support/captain_hook"
 MiniTest::Unit.runner = MiniTest::SuiteRunner.new
 MiniTest::Unit.runner.reporters << MiniTest::Reporters::SpecReporter.new
 MiniTest::Unit.runner.reporters << HttpMonkey::Support::CaptainHook.new
+
+require "minion_server"

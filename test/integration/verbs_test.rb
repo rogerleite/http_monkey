@@ -1,7 +1,6 @@
-require "integration/server"
+require "test_helper"
 
 VerbsApp = Rack::Builder.new do
-  #use IntegrationServer::InspectEnv # i can see clear now the rain is gone ...
   map "/" do
     run lambda { |env|
       env['rack.input'] = env['rack.input'].read if env['rack.input'].respond_to?(:read)
@@ -14,7 +13,7 @@ end
 describe "Integration Specs - Verbs" do
 
   def self.before_suite
-    @@server = IntegrationServer.new(VerbsApp).start
+    @@server = MinionServer.new(VerbsApp).start
   end
 
   def self.after_suite
