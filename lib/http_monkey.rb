@@ -33,15 +33,6 @@ module HttpMonkey
     @@default_client ||= build do
       net_adapter :net_http
       behaviours do
-        # Follow redirects
-        on([301, 302, 303, 307]) do |client, request, response|
-          if (location = response.headers["location"])
-            request.url = location
-            client.http_request(:get, request)
-          else
-            raise "HTTP status #{response.code} not supported (or location not found)"
-          end
-        end
         # By default, always return response
         on_unknown do |client, request, response|
           response
