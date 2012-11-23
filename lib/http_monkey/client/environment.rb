@@ -9,6 +9,7 @@ module HttpMonkey
     def initialize(obj = nil, &block)
       super
       self.merge!(obj) unless obj.nil?  # better idea? pull please.
+      self.default = nil
     end
 
     # Extracts HTTP_ headers from rack environment.

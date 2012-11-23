@@ -8,6 +8,15 @@ describe HttpMonkey::Client::Environment do
     subject.new.must_be_kind_of(Hash)
   end
 
+  describe "hash default" do
+    it "default non key be nil" do
+      env = subject.new("HTTP_CONTENT_TYPE" => "text/html",
+                        "HTTP_X_CUSTOM" => "custom")
+      env["HTTP_X_CUSTOM"].must_equal("custom")
+      env["NON_EXIST"].must_be_nil
+    end
+  end
+
   describe "#http_headers" do
     it "empty env must return empty Hash" do
       http_headers = subject.new.http_headers
