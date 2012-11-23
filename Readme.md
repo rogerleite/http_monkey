@@ -44,26 +44,18 @@ It's an awesome client with an awful name.
       req.auth.ssl.ssl_version       = :TLSv1             # or one of [:SSLv2, :SSLv3]
     end.get
 
-    # Default HTTP Headers (to all requests)
+    # HttpMonkey "built-in" middlewares
     HttpMonkey.configure do
+      # Default HTTP Headers (to all requests)
       middlewares.use HttpMonkey::M::DefaultHeaders, {"Content-Type" => "application/json"}
-    end
 
-    # Filter all requests (access to env and request objects)
-    HttpMonkey.configure do
+      # Filter ALL requests (access to env and request objects)
       middlewares.use HttpMonkey::M::RequestFilter do |env, request|
-        # HttpMonkey::Client::Environment, hash rack on steroids
-        # You can use "snaky" methods like:
-        # env.http_headers  # => {"Content-Type" => "text/html"}
-        # env.add_http_header("X-Custom" => "custom")
-
         # HTTPI::Request, you can set proxy, timeouts, authentication etc.
-        # req.proxy = "http://example.com"
+        # req.proxy = "http://proxy.com"
       end
-    end
 
-    # Enable automatic follow redirect
-    HttpMonkey.configure do
+      # Enable automatic follow redirect
       middlewares.use HttpMonkey::M::FollowRedirect, :max_tries => 3
     end
 ```
