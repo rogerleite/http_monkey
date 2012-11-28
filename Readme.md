@@ -2,8 +2,6 @@
 
 A fluent interface to do HTTP calls, free of fat dependencies and at same time, powered by middlewares rack.
 
-It's an awesome client with an awful name.
-
 ## Light and powerful
 
 ``` ruby
@@ -166,12 +164,14 @@ Easy to extend, using the power of Rack middleware interface.
     end
 ```
 
-Some ideas:
+Some ideas to future:
 
-* Cache? [rack-cache](https://github.com/rtomayko/rack-cache)
-* Logger? [http://rack.rubyforge.org/doc/Rack/Logger.html]
-* Profile?
-* Support to specific Media Type?
+* Cache? Finish [cachebag](https://github.com/abril/cachebag)
+* Support Cookies with http_monkey-cookies (to do).
+* Logger? Maybe a built-in middleware? Apache/Custom format.
+* Cool ways to support asynchronous calls.
+
+You can see my [presentation](http://www.slideshare.net/rogerleite14/http-monkey) in *pt-br* at Editora Abril.
 
 ## Easy to contribute
 
