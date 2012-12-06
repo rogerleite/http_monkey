@@ -8,6 +8,7 @@ module HttpMonkey
       # behaviour default always return response
       @behaviours.on_unknown { |client, req, response| response }
       @middlewares = HttpMonkey::Configuration::Middlewares.new
+      @storage = Hash.new
     end
 
     def initialize_copy(source)
@@ -29,6 +30,11 @@ module HttpMonkey
     def middlewares(&block)
       @middlewares.instance_eval(&block) if block_given?
       @middlewares
+    end
+
+    def storage(store = nil)
+      @storage = store unless store.nil?
+      @storage
     end
 
   end

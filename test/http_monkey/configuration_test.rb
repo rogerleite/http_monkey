@@ -61,4 +61,18 @@ describe HttpMonkey::Configuration do
     end
   end
 
+  describe "#storage" do
+    it "respond_to" do
+      subject.must_respond_to(:storage)
+    end
+    it "returns hash by default" do
+      subject.storage.must_be_instance_of(Hash)
+    end
+    it "allows to change" do
+      MyCustomStorage = Class.new(Hash)
+      subject.storage(MyCustomStorage.new)
+      subject.storage.must_be_instance_of(MyCustomStorage)
+    end
+  end
+
 end
