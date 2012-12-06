@@ -36,7 +36,8 @@ module HttpMonkey
         'CONTENT_LENGTH'  => rack_input.length.to_s,
 
         # custom info
-        'http_monkey.request' => [@method, @request, @client]
+        'http_monkey.request' => [@method, @request, @client],
+        'http_monkey.storage' => @client.storage
       })
       env.add_http_header(@request.headers)
       env

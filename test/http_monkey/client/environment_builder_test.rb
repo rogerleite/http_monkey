@@ -33,6 +33,10 @@ describe HttpMonkey::Client::EnvironmentBuilder do
       env['http_monkey.request'].must_equal([:get, stub_request, client])
     end
 
+    it "sets 'http_monkey.storage'" do
+      env['http_monkey.storage'].must_be_same_as(client.storage)
+    end
+
     it "adds http headers" do
       env['HTTP_CONTENT_TYPE'].must_equal("plain/text")
     end

@@ -93,6 +93,12 @@ module HttpMonkey
       (method.empty? ? nil : method.downcase.to_sym)
     end
 
+    # Returns instance from HttpMonkey::Configuration#storage.
+    # Simple Hash instance by default.
+    def storage
+      self['http_monkey.storage']
+    end
+
   end
 
 end
