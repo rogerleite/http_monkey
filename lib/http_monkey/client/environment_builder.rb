@@ -23,7 +23,6 @@ module HttpMonkey
     # Returns a instance of HttpMonkey::Client::Environment with
     # rack like headers.
     def to_env
-      uri = @request.url
       rack_input = normalize_body(@request.body)
 
       env = HttpMonkey::Client::Environment.new(DEFAULT_ENV)
@@ -42,6 +41,8 @@ module HttpMonkey
       env.add_http_header(@request.headers)
       env
     end
+
+    protected
 
     def normalize_body(body)
       return "" if body.nil?
