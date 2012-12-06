@@ -18,7 +18,7 @@ describe HttpMonkey::Configuration do
   end
 
   describe "#net_adapter" do
-    it "returns value" do
+    it "returns :net_http by default" do
       subject.net_adapter.must_equal(:net_http)
     end
     it "sets value" do
