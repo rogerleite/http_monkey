@@ -125,4 +125,12 @@ describe HttpMonkey::Client::Environment do
     end
   end
 
+  describe "#storage" do
+    it "returns 'http_monkey.storage' key" do
+      stub_store = stub("storage")
+      env = subject.new('http_monkey.storage' => stub_store)
+      env.storage.must_be_same_as(stub_store)
+    end
+  end
+
 end

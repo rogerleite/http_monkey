@@ -10,18 +10,26 @@ describe HttpMonkey::Client do
     subject.at("http://server.com").must_be_instance_of(HttpMonkey::EntryPoint)
   end
 
-  describe "default values" do
+  describe "configuration attributes" do
     it "#net_adapter" do
-      subject.net_adapter.must_equal(:net_http)
+      subject.must_respond_to(:net_adapter)
+    end
+    it "#storage" do
+      subject.must_respond_to(:storage)
     end
   end
 
   describe "#configure" do
-    it "#net_adapter" do
+    it "returns self" do
+      subject.configure.must_be_same_as(subject)
+    end
+    it "yields Configuration instance" do
+      flag = "out block"
       subject.configure do
-        net_adapter(:curb)
+        self.must_be_instance_of(HttpMonkey::Configuration)
+        flag = "inner block"
       end
-      subject.net_adapter.must_equal(:curb)
+      flag.must_equal("inner block")
     end
   end
 

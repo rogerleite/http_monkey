@@ -18,7 +18,7 @@ describe HttpMonkey::Configuration do
   end
 
   describe "#net_adapter" do
-    it "returns value" do
+    it "returns :net_http by default" do
       subject.net_adapter.must_equal(:net_http)
     end
     it "sets value" do
@@ -58,6 +58,20 @@ describe HttpMonkey::Configuration do
         flag = "inside block"
       end
       flag.must_equal("inside block")
+    end
+  end
+
+  describe "#storage" do
+    it "respond_to" do
+      subject.must_respond_to(:storage)
+    end
+    it "returns hash by default" do
+      subject.storage.must_be_instance_of(Hash)
+    end
+    it "allows to change" do
+      MyCustomStorage = Class.new(Hash)
+      subject.storage(MyCustomStorage.new)
+      subject.storage.must_be_instance_of(MyCustomStorage)
     end
   end
 
