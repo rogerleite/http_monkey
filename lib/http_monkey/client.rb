@@ -19,6 +19,10 @@ module HttpMonkey
       @conf.net_adapter
     end
 
+    def storage
+      @conf.storage
+    end
+
     def configure(&block)
       @conf.instance_eval(&block) if block_given?
       self
