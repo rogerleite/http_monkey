@@ -1,19 +1,9 @@
 require "test_helper"
 
-VerbsApp = Rack::Builder.new do
-  map "/" do
-    run lambda { |env|
-      env['rack.input'] = env['rack.input'].read if env['rack.input'].respond_to?(:read)
-      body = YAML.dump(env)
-      [200, {"Content-Type" => "text/plain", "Content-Length" => body.size.to_s}, [body]]
-    }
-  end
-end
-
 describe "Integration Specs - Verbs" do
 
   def self.before_suite
-    @@server = MinionServer.new(VerbsApp).start
+    @@server = MinionServer.new(MirrorApp).start
   end
 
   def self.after_suite
