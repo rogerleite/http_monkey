@@ -1,11 +1,13 @@
-module HttpMonkey
+module HttpMonkey::Middlewares
 
   # Main App middleware
   # Responsible to make HTTP request
-  class Client::HttpRequest
+  class HttpRequest
 
     def self.call(env)
-      env = Client::Environment.new(env) unless env.is_a?(Client::Environment)
+      unless env.is_a?(HttpMonkey::Client::Environment)
+        env = HttpMonkey::Client::Environment.new(env)
+      end
       _, request, client = env['http_monkey.request']
 
       method = env.request_method

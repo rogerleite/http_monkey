@@ -30,7 +30,7 @@ module HttpMonkey
 
     def http_request(method, request)
       env = Client::EnvironmentBuilder.new(self, method, request).to_env
-      code, headers, body = @conf.middlewares.execute(Client::HttpRequest, env)
+      code, headers, body = @conf.middlewares.execute(Middlewares::HttpRequest, env)
       body.close if body.respond_to?(:close)  # close when is a Rack::BodyProxy
       response = HTTPI::Response.new(code, headers, body)
 
