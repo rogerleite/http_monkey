@@ -48,13 +48,7 @@ module HttpMonkey
     include EntryPointFluentInterface
 
     def get(query_param = nil, &block)
-      # pending pull request to httpi support @request.query=
-      if query_param.kind_of?(Hash)
-        query_param = Rack::Utils.build_query(query_param)
-      end
-      query_param = query_param.to_s unless query_param.is_a?(String)
-      @request.url.query = query_param unless query_param.empty?
-
+      @request.query = query_param unless query_param.nil?
       capture_client(&block).http_request(:get, @request)
     end
 
