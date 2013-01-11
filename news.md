@@ -5,15 +5,23 @@ title: News - HTTP Monkey by Roger Leite
 
 # Releases
 
+* [Hog v0.0.4](#hog)
 * [Mojo v0.0.3](#mojo)
 * [Bubbles v0.0.2](#bubbles)
+
+# Hog
+
+Hog monkey from [Avatar the Last Airbender](http://avatar.wikia.com/wiki/Hog_monkey).
+Edge version
+
+[Back to top](#top)
 
 # Mojo
 
 ![Mojo Jojo supervillain](http://www.cartoonnetwork.co.uk/sites/www.cartoonnetwork.co.uk/files/mojojojo.png)
 
 Who is Mojo?!? Mojo Jojo is supervillain from [The Powerpuff Girls](http://en.wikipedia.org/wiki/The_Powerpuff_Girls).
-Not released yet.
+Released on 2013-01-11, [contains 24 commits, 21 changed files with 236 additions and 210 deletions](https://github.com/rogerleite/http_monkey/compare/v0.0.2...v0.0.3).
 
 [Back to top](#top)
 
