@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>HTTP Monkey by rogerleite</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>HTTP Monkey</h1>
+        <h2>A fluent interface to do HTTP calls, free of fat dependencies and at same time, powered by middlewares rack.</h2>
+        <a href="https://github.com/rogerleite/http_monkey" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>HTTP Monkey <a href="https://travis-ci.org/rogerleite/http_monkey"><img src="https://secure.travis-ci.org/rogerleite/http_monkey.png?branch=master" alt="Build Status"></a>
+</h1>
+
+<p>A fluent interface to do HTTP calls, free of fat dependencies and at same time, powered by middlewares rack.</p>
+
+<h2>Light and powerful</h2>
+
+<div class="highlight"><pre>    <span class="c1"># Works with Entry Point concept</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="ss">:q</span> <span class="o">=&gt;</span> <span class="s2">"Http Monkey!"</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="n">response</span><span class="o">.</span><span class="n">body</span>  <span class="c1"># More info about response at http://httpirb.com/#responses</span>
+
+    <span class="c1">## Headers</span>
+    <span class="no">HttpMonket</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span>
+      <span class="n">with_header</span><span class="p">(</span><span class="s2">"Content-Type"</span> <span class="o">=&gt;</span> <span class="s2">"text/html"</span><span class="p">)</span><span class="o">.</span>
+      <span class="n">with_header</span><span class="p">(</span><span class="s2">"X-Custom"</span> <span class="o">=&gt;</span> <span class="s2">"sample"</span><span class="p">)</span><span class="o">.</span>
+      <span class="n">get</span>
+
+    <span class="c1">## Cookies</span>
+    <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">set_cookie</span><span class="p">(</span><span class="s2">"blah"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span>
+
+    <span class="c1">## Basic Authentication</span>
+    <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://user:pass@google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span>
+    <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span>
+      <span class="n">basic_auth</span><span class="p">(</span><span class="s2">"user"</span><span class="p">,</span> <span class="s2">"pass"</span><span class="p">)</span><span class="o">.</span>
+      <span class="n">get</span>
+
+    <span class="c1">## Request Internals (yields HTTPI::Request, to set your obscure desires)</span>
+    <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">yield_request</span> <span class="k">do</span> <span class="o">|</span><span class="n">req</span><span class="o">|</span>
+      <span class="n">req</span><span class="o">.</span><span class="n">proxy</span> <span class="o">=</span> <span class="s2">"http://proxy.com"</span>
+      <span class="n">req</span><span class="o">.</span><span class="n">open_timeout</span> <span class="o">=</span> <span class="mi">30</span>
+      <span class="n">req</span><span class="o">.</span><span class="n">read_timeout</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="k">end</span><span class="o">.</span><span class="n">get</span>
+
+    <span class="c1"># SSL</span>
+    <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">yield_request</span> <span class="k">do</span> <span class="o">|</span><span class="n">req</span><span class="o">|</span>
+      <span class="n">req</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">cert_key_file</span>     <span class="o">=</span> <span class="s2">"client_key.pem"</span>   <span class="c1"># the private key file to use</span>
+      <span class="n">req</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">cert_key_password</span> <span class="o">=</span> <span class="s2">"C3rtP@ssw0rd"</span>     <span class="c1"># the key file's password</span>
+      <span class="n">req</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">cert_file</span>         <span class="o">=</span> <span class="s2">"client_cert.pem"</span>  <span class="c1"># the certificate file to use</span>
+      <span class="n">req</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">ca_cert_file</span>      <span class="o">=</span> <span class="s2">"ca_cert.pem"</span>      <span class="c1"># the ca certificate file to use</span>
+      <span class="n">req</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">verify_mode</span>       <span class="o">=</span> <span class="ss">:none</span>              <span class="c1"># or one of [:peer, :fail_if_no_peer_cert, :client_once]</span>
+      <span class="n">req</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">ssl_version</span>       <span class="o">=</span> <span class="ss">:TLSv1</span>             <span class="c1"># or one of [:SSLv2, :SSLv3]</span>
+    <span class="k">end</span><span class="o">.</span><span class="n">get</span>
+
+    <span class="c1"># HttpMonkey "built-in" middlewares</span>
+    <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span>
+      <span class="c1"># Default HTTP Headers (to all requests)</span>
+      <span class="n">middlewares</span><span class="o">.</span><span class="n">use</span> <span class="no">HttpMonkey</span><span class="o">::</span><span class="n">M</span><span class="o">::</span><span class="no">DefaultHeaders</span><span class="p">,</span> <span class="p">{</span><span class="s2">"Content-Type"</span> <span class="o">=&gt;</span> <span class="s2">"application/json"</span><span class="p">}</span>
+
+      <span class="c1"># Filter ALL requests (access to env and request objects)</span>
+      <span class="n">middlewares</span><span class="o">.</span><span class="n">use</span> <span class="no">HttpMonkey</span><span class="o">::</span><span class="n">M</span><span class="o">::</span><span class="no">RequestFilter</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="p">,</span> <span class="n">request</span><span class="o">|</span>
+        <span class="c1"># HTTPI::Request, you can set proxy, timeouts, authentication etc.</span>
+        <span class="c1"># req.proxy = "http://proxy.com"</span>
+      <span class="k">end</span>
+
+      <span class="c1"># Enable automatic follow redirect</span>
+      <span class="n">middlewares</span><span class="o">.</span><span class="n">use</span> <span class="no">HttpMonkey</span><span class="o">::</span><span class="n">M</span><span class="o">::</span><span class="no">FollowRedirect</span><span class="p">,</span> <span class="ss">:max_tries</span> <span class="o">=&gt;</span> <span class="mi">3</span>
+    <span class="k">end</span>
+</pre></div>
+
+<h2>Flexibility</h2>
+
+<p>You can configure the default or build your own client and define how it should behave.</p>
+
+<p>You can also define net adapter, behaviours and middlewares by request.</p>
+
+<div class="highlight"><pre>    <span class="c1"># Changing default client</span>
+    <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span>
+      <span class="n">net_adapter</span> <span class="ss">:curb</span>
+      <span class="n">behaviours</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">client</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="o">|</span>
+        <span class="k">raise</span> <span class="s2">"Server side error :X"</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="c1"># Works with status code callbacks (here known as behaviours)</span>
+    <span class="n">chimp</span> <span class="o">=</span> <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">build</span> <span class="k">do</span>
+      <span class="n">behaviours</span> <span class="k">do</span>
+        <span class="c1"># 2xx range</span>
+        <span class="n">on</span><span class="p">(</span><span class="mi">200</span><span class="o">.</span><span class="n">.</span><span class="mi">299</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">client</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="o">|</span>
+          <span class="n">response</span>
+        <span class="k">end</span>
+        <span class="c1"># Redirects</span>
+        <span class="n">on</span><span class="p">(</span><span class="o">[</span><span class="mi">301</span><span class="p">,</span> <span class="mi">302</span><span class="o">]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">client</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="o">|</span>
+          <span class="k">raise</span> <span class="s2">"Redirect error"</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">chimp</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span>  <span class="c1"># raises Redirect error</span>
+
+    <span class="c1"># by request</span>
+    <span class="n">chimp</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span> <span class="k">do</span>
+      <span class="n">behaviours</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">client</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="o">|</span>
+        <span class="k">raise</span> <span class="s2">"ok"</span> <span class="c1"># only for this request</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</pre></div>
+
+<h2>Choose your HTTP client</h2>
+
+<p>Thanks to <a href="http://httpirb.com/">HTTPI</a>, you can choose different HTTP clients:</p>
+
+<ul>
+<li><a href="http://rubygems.org/gems/httpclient">HTTPClient</a></li>
+<li><a href="http://rubygems.org/gems/curb">Curb</a></li>
+<li><a href="http://ruby-doc.org/stdlib/libdoc/net/http/rdoc">Net::HTTP</a></li>
+</ul><p><em>Important</em>: If you want to use anything other than Net::HTTP, you need to manually require the library or make sure it’s available in your load path.</p>
+
+<div class="highlight"><pre>    <span class="c1"># When you build your own client, you can define which Http client to use.</span>
+    <span class="n">chimp</span> <span class="o">=</span> <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">build</span> <span class="k">do</span>
+      <span class="c1"># HTTP clients available [:httpclient, :curb, :net_http]</span>
+      <span class="n">net_adapter</span> <span class="ss">:curb</span>  <span class="c1"># default :net_http</span>
+      <span class="c1"># [...]</span>
+    <span class="k">end</span>
+
+    <span class="c1"># You can also change you net_adapter by request</span>
+    <span class="n">chimp</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span> <span class="k">do</span>
+      <span class="c1"># only on this request, use :httpclient</span>
+      <span class="n">net_adapter</span> <span class="ss">:httpclient</span>
+      <span class="c1"># [...]</span>
+    <span class="k">end</span>
+</pre></div>
+
+<h2>More power to the people (for God sake!)</h2>
+
+<p>Easy to extend, using the power of Rack middleware interface.</p>
+
+<div class="highlight"><pre>
+    <span class="k">class</span> <span class="nc">Logger</span>
+      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+        <span class="vi">@app</span> <span class="o">=</span> <span class="n">app</span>
+      <span class="k">end</span>
+      <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="nb">puts</span> <span class="s2">"-&gt; before </span><span class="si">#{</span><span class="n">env</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="vi">@app</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="nb">puts</span> <span class="s2">"-&gt; after </span><span class="si">#{</span><span class="n">env</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">result</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="c1"># Add custom middlewares to default stack</span>
+    <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span>
+      <span class="n">middlewares</span> <span class="k">do</span>
+        <span class="n">use</span> <span class="no">Logger</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="c1"># Now all requests uses Logger</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span>
+
+    <span class="c1"># or when you build your own client</span>
+    <span class="n">chimp</span> <span class="o">=</span> <span class="no">HttpMonkey</span><span class="o">.</span><span class="n">build</span> <span class="k">do</span>
+      <span class="n">middlewares</span> <span class="k">do</span>
+        <span class="n">use</span> <span class="no">Logger</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="c1"># or by request</span>
+    <span class="n">chimp</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s2">"http://google.com"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span> <span class="k">do</span>
+      <span class="n">middlewares</span><span class="o">.</span><span class="n">use</span> <span class="no">Logger</span>
+      <span class="c1"># [...]</span>
+    <span class="k">end</span>
+</pre></div>
+
+<p>Some ideas to future:</p>
+
+<ul>
+<li>Cache? Finish <a href="https://github.com/abril/cachebag">cachebag</a>
+</li>
+<li>Support Cookies with http_monkey-cookies (to do).</li>
+<li>Logger? Maybe a built-in middleware? Apache/Custom format.</li>
+<li>Cool ways to support asynchronous calls.</li>
+</ul><p>You can see my <a href="http://www.slideshare.net/rogerleite14/http-monkey">presentation</a> in <em>pt-br</em> at Editora Abril.</p>
+
+<h2>Easy to contribute</h2>
+
+<p>Suggestions, bugs and pull requests, here at <a href="http://github.com/rogerleite/http_monkey">github.com/rogerleite/http_monkey</a>.
+<code>bundle install</code>, <code>rake test</code> and be happy!</p>
+
+<h2>License</h2>
+
+<p>HTTP Monkey is copyright 2012 Roger Leite and contributors. It is licensed under the MIT license. See the include LICENSE file for details.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/rogerleite/http_monkey/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/rogerleite/http_monkey/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/rogerleite/http_monkey"></a> is maintained by <a href="https://github.com/rogerleite">rogerleite</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
