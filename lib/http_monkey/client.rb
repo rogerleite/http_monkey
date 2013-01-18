@@ -34,11 +34,9 @@ module HttpMonkey
       body.close if body.respond_to?(:close)  # close when is a Rack::BodyProxy
       response = Client::Response.new(code, headers, body)
 
-      if (behaviour = @conf.behaviours.find(response.code))
-        behaviour.call(self, request, response)
-      else
-        unknown_behaviour = @conf.behaviours.unknown_behaviour
-        unknown_behaviour.call(self, request, response) if unknown_behaviour.respond_to?(:call)
+      client = self
+      @conf.behaviours.execute(response.code) do |behaviour|
+        behaviour.call(client, request, response)
       end
     end
 

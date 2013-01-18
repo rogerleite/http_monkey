@@ -31,4 +31,35 @@ describe HttpMonkey::Configuration::Behaviours do
     subject.on_unknown { "ok" }
     subject.unknown_behaviour.call.must_equal("ok")
   end
+
+  describe "#execute" do
+    it "uses find" do
+      subject.on(666) { "OK" }
+
+      result = nil
+      subject.execute(666) do |behaviour|
+        result = behaviour.call
+      end
+      result.must_equal("OK")
+    end
+    it "uses unknown" do
+      subject.on_unknown { "OK" }
+      subject.on(200) { "200 OK" }
+
+      result = nil
+      subject.execute(666) do |behaviour|
+        result = behaviour.call
+      end
+      result.must_equal("OK")
+    end
+    it "raises exception" do
+      subject.on(666) { raise "error" }
+      lambda {
+        subject.execute(666) do |behaviour|
+          behaviour.call
+        end
+      }.must_raise(RuntimeError)
+    end
+  end
+
 end

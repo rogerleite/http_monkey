@@ -44,6 +44,11 @@ module HttpMonkey
       behaviour
     end
 
+    def execute(code)
+      behaviour = self.find(code) || self.unknown_behaviour
+      yield(behaviour) if block_given?
+    end
+
   end
 
 end
