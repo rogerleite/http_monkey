@@ -39,6 +39,11 @@ module HttpMonkey
       @error_behaviour = block
     end
 
+    # Public: Look for behaviours defined by *code*.
+    #
+    # code - Integer. Generally response.code
+    #
+    # Returns Proc defined by *code* or unknown_behaviour proc.
     def find(code)
       behaviour = @behaviours[code]
       if behaviour.nil?
@@ -46,12 +51,7 @@ module HttpMonkey
           range.include?(code)
         end
       end
-      behaviour
-    end
-
-    def execute(code)
-      behaviour = self.find(code) || self.unknown_behaviour
-      yield(behaviour) if block_given?
+      behaviour || self.unknown_behaviour
     end
 
   end

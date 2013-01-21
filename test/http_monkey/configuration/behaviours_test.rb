@@ -4,7 +4,15 @@ describe HttpMonkey::Configuration::Behaviours do
 
   subject { HttpMonkey::Configuration::Behaviours.new }
 
+  it "#on_unknown" do
+    subject.on_unknown { "ok" }
+    subject.unknown_behaviour.call.must_equal("ok")
+  end
+
   describe "#on" do
+    before do
+      subject.on_unknown # clears unknown_behaviour
+    end
     it "support Integer code" do
       subject.on(1) { "test int" }
 
@@ -25,40 +33,9 @@ describe HttpMonkey::Configuration::Behaviours do
       subject.find(3).call.must_equal("test array")
       subject.find(1).must_be_nil
     end
-  end
-
-  it "#on_unknown" do
-    subject.on_unknown { "ok" }
-    subject.unknown_behaviour.call.must_equal("ok")
-  end
-
-  describe "#execute" do
-    it "uses find" do
-      subject.on(666) { "OK" }
-
-      result = nil
-      subject.execute(666) do |behaviour|
-        result = behaviour.call
-      end
-      result.must_equal("OK")
-    end
-    it "uses unknown" do
-      subject.on_unknown { "OK" }
-      subject.on(200) { "200 OK" }
-
-      result = nil
-      subject.execute(666) do |behaviour|
-        result = behaviour.call
-      end
-      result.must_equal("OK")
-    end
-    it "raises exception" do
-      subject.on(666) { raise "error" }
-      lambda {
-        subject.execute(666) do |behaviour|
-          behaviour.call
-        end
-      }.must_raise(RuntimeError)
+    it "support unknown_behaviour" do
+      subject.on_unknown { "unknown" }
+      subject.find(666).call.must_equal("unknown")
     end
   end
 

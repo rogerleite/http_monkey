@@ -41,9 +41,8 @@ module HttpMonkey
       end
 
       response = Client::Response.new(code, headers, body)
-      @conf.behaviours.execute(response.code) do |behaviour|
-        behaviour.call(client, request, response)
-      end
+      behaviour = @conf.behaviours.find(response.code)
+      behaviour.call(client, request, response)
     end
 
   end
