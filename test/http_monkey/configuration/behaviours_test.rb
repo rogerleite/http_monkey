@@ -62,4 +62,9 @@ describe HttpMonkey::Configuration::Behaviours do
     end
   end
 
+  it "#on_error" do
+    subject.on_error { "on error" }
+    subject.error_behaviour.call.must_equal("on error")
+  end
+
 end

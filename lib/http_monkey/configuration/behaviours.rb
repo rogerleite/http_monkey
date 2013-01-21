@@ -2,7 +2,7 @@ module HttpMonkey
 
   class Configuration::Behaviours
 
-    attr_reader :unknown_behaviour
+    attr_reader :unknown_behaviour, :error_behaviour
 
     def initialize
       self.clear!
@@ -18,6 +18,7 @@ module HttpMonkey
       @behaviours = {}
       @behaviours_range = {}
       @unknown_behaviour = nil
+      @error_behaviour = nil
       nil
     end
 
@@ -32,6 +33,10 @@ module HttpMonkey
 
     def on_unknown(&block)
       @unknown_behaviour = block
+    end
+
+    def on_error(&block)
+      @error_behaviour = block
     end
 
     def find(code)

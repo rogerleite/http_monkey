@@ -29,12 +29,18 @@ module HttpMonkey
     end
 
     def http_request(method, request)
-      env = Client::EnvironmentBuilder.new(self, method, request).to_env
-      code, headers, body = @conf.middlewares.execute(Middlewares::HttpRequest, env)
-      body.close if body.respond_to?(:close)  # close when is a Rack::BodyProxy
-      response = Client::Response.new(code, headers, body)
-
       client = self
+      env = Client::EnvironmentBuilder.new(self, method, request).to_env
+
+      begin
+        code, headers, body = @conf.middlewares.execute(Middlewares::HttpRequest, env)
+        body.close if body.respond_to?(:close)  # close when is a Rack::BodyProxy
+      rescue => error
+        raise unless @conf.behaviours.error_behaviour
+        return @conf.behaviours.error_behaviour.call(client, request, error)
+      end
+
+      response = Client::Response.new(code, headers, body)
       @conf.behaviours.execute(response.code) do |behaviour|
         behaviour.call(client, request, response)
       end
