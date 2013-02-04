@@ -1,5 +1,4 @@
-[![Mini logo](https://raw.github.com/rogerleite/http_monkey/gh-pages/images/m1_pb.png)]
-# HTTP Monkey [![Build Status](https://secure.travis-ci.org/rogerleite/http_monkey.png?branch=master)](https://travis-ci.org/rogerleite/http_monkey)
+# HTTP Monkey [![Mini logo](https://raw.github.com/rogerleite/http_monkey/gh-pages/images/m1_pb.png)] [![Build Status](https://secure.travis-ci.org/rogerleite/http_monkey.png?branch=master)](https://travis-ci.org/rogerleite/http_monkey)
 
 A fluent interface to do HTTP calls, free of fat dependencies and at same time, powered by middlewares rack.
 * Light and powerful interface
