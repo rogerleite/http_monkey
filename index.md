@@ -89,6 +89,10 @@ You can also define net adapter, behaviours and middlewares by request.
         on([301, 302]) do |client, request, response|
           raise "Redirect error"
         end
+        # By default, Monkey raises error. You can catch them, if you want.
+        on_error do |client, request, error| do
+          # do something with error
+        end
       end
     end
 
