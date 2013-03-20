@@ -184,7 +184,11 @@ If you want to contribute, follow these steps:
 * `$ bundle install`
 * `$ rake test`
 
+See [CONTRIBUTING](https://github.com/rogerleite/http_monkey/blob/master/CONTRIBUTING.md) for more details.
+
 ## License
 
 HTTP Monkey is copyright 2012 Roger Leite and contributors.
 It is licensed under the MIT license. See the include LICENSE file for details.
+
+Project is a member of the [OSS Manifesto](http://ossmanifesto.com/).
