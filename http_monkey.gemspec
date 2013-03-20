@@ -8,8 +8,11 @@ Gem::Specification.new do |gem|
   gem.version       = HttpMonkey::VERSION
   gem.authors       = ["Roger Leite"]
   gem.email         = ["roger.barreto@gmail.com"]
-  gem.description   = %q{A fluent interface to do HTTP calls, free of fat dependencies and at same time, powered by middlewares rack.}
-  gem.summary       = %q{A fluent interface to do HTTP calls, free of fat dependencies and at same time, powered by middlewares rack.}
+  gem.summary       = 'Slim HTTP client powered by middlewares and support to many adapters.'
+  gem.description   = <<-DESC
+    Slim HTTP client with fluent interface. Supports many adapters, HTTPClient, Curb,
+    EM-HTTP-Request and Ruby net/http by default. Powered by middlewares, like Rack.
+  DESC
   gem.homepage      = "https://github.com/rogerleite/http_monkey"
 
   gem.files         = `git ls-files`.split($/)
@@ -18,8 +21,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency "rack"
-  gem.add_runtime_dependency "httpi", "~> 2.0.0"
-  gem.add_runtime_dependency "http_objects", "~> 0.0.4"
+  gem.add_runtime_dependency "httpi", "~> 2"
+  gem.add_runtime_dependency "http_objects", "~> 0"
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "minitest", "~> 3"
