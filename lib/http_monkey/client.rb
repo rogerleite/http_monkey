@@ -23,6 +23,12 @@ module HttpMonkey
       @conf.storage
     end
 
+    def build(&block)
+      smith = self.clone
+      smith.configure(&block) if block.respond_to?(:call)
+      smith
+    end
+
     def configure(&block)
       @conf.instance_eval(&block) if block_given?
       self

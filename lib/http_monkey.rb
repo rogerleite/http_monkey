@@ -27,13 +27,13 @@ module HttpMonkey
   end
 
   def self.build(&block)
-    HttpMonkey::Client.new.configure(&block)
+    default_client.build(&block)
   end
 
   protected
 
   def self.default_client
-    @@default_client ||= build do
+    @@default_client ||= HttpMonkey::Client.new.configure do
       net_adapter :net_http
       behaviours do
         # By default, always return response
