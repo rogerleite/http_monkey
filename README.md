@@ -76,7 +76,7 @@ Some code to make developers happy!
 
 ## Development
 
-Suggestions, bugs and pull requests, use [GitHub Issues](http://github.com/rogerleite/http_monkey/issues).
+Suggestions, bugs and pull requests, use [GitHub Issues](http://github.com/rogerleite/http_monkey/issues). See [CONTRIBUTING](https://github.com/rogerleite/http_monkey/blob/master/CONTRIBUTING.md) for more details.
 
 To see what has changed in recent versions of HTTP Monkey, see the [CHANGELOG](https://github.com/rogerleite/http_monkey/blob/master/CHANGELOG.md).
 
