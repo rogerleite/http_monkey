@@ -89,3 +89,7 @@ To see what has changed in recent versions of HTTP Monkey, see the [CHANGELOG](h
 Copyright © 2012 HTTP Monkey. See [LICENSE](https://github.com/rogerleite/http_monkey/blob/master/LICENSE) for details.
 
 Project is a member of the [OSS Manifesto](http://ossmanifesto.com/).
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/rogerleite/http_monkey/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
