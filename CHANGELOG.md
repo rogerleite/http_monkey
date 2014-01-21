@@ -2,6 +2,7 @@
 
 ## 0.0.5 (unreleased)
 
+  * Patch method [By @driedtoast](https://github.com/rogerleite/http_monkey/pull/15). Thanks!
   * Participating of [OSS Manifesto](http://ossmanifesto.org/).
 
 ## 0.0.4
