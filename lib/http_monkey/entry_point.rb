@@ -57,6 +57,11 @@ module HttpMonkey
       capture_client(&block).http_request(:post, @request)
     end
 
+    def patch(body_param, &block)
+      @request.body = body_param
+      capture_client(&block).http_request(:patch, @request)
+    end
+
     def put(body_param, &block)
       @request.body = body_param
       capture_client(&block).http_request(:put, @request)

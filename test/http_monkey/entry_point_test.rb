@@ -62,6 +62,11 @@ describe HttpMonkey::EntryPoint do
     subject.put(:p1 => "param1", :p2 => "param2")
   end
 
+  it "#patch with parameters" do
+    expects_request_on(@mock_client, :patch, /(p1=param1&p2=param2)|(p2=param2&p1=param1)/)
+    subject.patch(:p1 => "param1", :p2 => "param2")
+  end
+
   it "#delete" do
     expects_request_on(@mock_client, :delete, nil)
     subject.delete
